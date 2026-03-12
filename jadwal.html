@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jadwal & Agenda | Kopi Bosku</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            espresso: '#120E0B',
+            macchiato: '#1C1612',
+            mocha: '#8C5E3C',
+            latte: '#F3E5D8',
+            matcha: '#4A5D23',
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #8C5E3C; border-radius: 10px; }
+  </style>
+</head>
+<body class="bg-espresso text-latte h-screen flex overflow-hidden">
+
+  <aside class="w-20 bg-macchiato border-r border-mocha/20 flex flex-col items-center py-6 hidden md:flex z-10">
+    <div class="w-12 h-12 bg-mocha rounded-xl flex items-center justify-center font-black text-espresso mb-8 shadow-lg shadow-mocha/20">BM</div>
+    
+   <nav class="flex-1 space-y-6 w-full flex flex-col items-center">
+      <a href="dashboard.html" class="p-3 text-latte/50 hover:text-mocha hover:bg-white/5 rounded-xl transition-all" title="Dashboard">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+      </a>
+      <a href="kasir.html" class="p-3 text-latte/50 hover:text-mocha hover:bg-white/5 rounded-xl transition-all" title="Kasir">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+      </a>
+      <a href="stok.html" class="p-3 text-latte/50 hover:text-mocha hover:bg-white/5 rounded-xl transition-all" title="Stok Gudang">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+      </a>
+      <a href="jadwal.html" class="p-3 bg-mocha text-espresso rounded-xl shadow-lg shadow-mocha/20 scale-110" title="Jadwal & Agenda">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+      </a>
+    </nav>
+  </aside>
+
+  <main class="flex-1 flex flex-col h-full overflow-hidden bg-espresso">
+    
+    <header class="p-6 border-b border-mocha/10 flex justify-between items-center bg-macchiato/50 backdrop-blur-md">
+      <div>
+        <h2 class="text-2xl font-bold text-latte">Kalender & Jadwal</h2>
+        <p class="text-sm text-latte/50 mt-1">Atur shift, restock, dan reservasi meja.</p>
+      </div>
+      <div class="px-6 py-3 bg-macchiato border border-mocha/30 rounded-2xl shadow-lg shadow-mocha/10 flex items-center gap-3">
+        <svg class="w-6 h-6 text-mocha animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span id="realtime-clock" class="text-2xl font-black tracking-widest text-latte">00:00:00</span>
+      </div>
+    </header>
+
+    <div class="flex-1 overflow-y-auto p-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 h-full">
+        
+        <div class="lg:col-span-2 bg-macchiato border border-mocha/20 rounded-3xl p-6 shadow-2xl flex flex-col">
+          <div class="flex justify-between items-center mb-6">
+            <h3 id="bulan-tahun" class="text-2xl font-black text-mocha uppercase tracking-wider">Maret 2026</h3>
+            <div class="flex gap-2">
+              <button onclick="ubahBulan(-1)" class="p-2 border border-mocha/30 rounded-xl hover:bg-mocha hover:text-espresso transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+              <button onclick="ubahBulan(1)" class="p-2 border border-mocha/30 rounded-xl hover:bg-mocha hover:text-espresso transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-7 gap-2 mb-2 text-center text-sm font-bold text-latte/50">
+            <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
+          </div>
+          
+          <div id="grid-kalender" class="grid grid-cols-7 gap-2 flex-1 auto-rows-fr">
+            </div>
+        </div>
+
+        <div class="bg-macchiato/80 border border-mocha/20 rounded-3xl p-6 shadow-2xl flex flex-col relative overflow-hidden">
+          <div class="absolute -right-10 -top-10 w-40 h-40 bg-mocha/5 rounded-full blur-3xl"></div>
+          
+          <div class="relative z-10 flex justify-between items-center mb-6 border-b border-mocha/10 pb-4">
+            <div>
+              <p class="text-sm font-bold text-latte/50" id="agenda-hari">Agenda Hari Ini</p>
+              <h3 class="text-xl font-black text-latte mt-1" id="agenda-tanggal">11 Maret 2026</h3>
+            </div>
+          </div>
+
+          <div id="list-agenda" class="flex-1 space-y-4 overflow-y-auto relative z-10 pr-2">
+            </div>
+
+          <button onclick="bukaModalJadwal()" class="mt-6 w-full py-4 bg-mocha hover:bg-[#7a5032] text-espresso font-black rounded-xl transition-all shadow-lg shadow-mocha/20 active:scale-95 relative z-10 flex justify-center items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+            Tambah Agenda
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <div id="modal-jadwal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[99] hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
+    <div class="bg-macchiato border border-mocha/30 rounded-3xl p-8 w-full max-w-md shadow-2xl transform scale-95 transition-transform duration-300" id="modal-content-jadwal">
+      <h3 class="text-2xl font-black text-mocha mb-6">Jadwal Baru</h3>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-bold text-latte/70 mb-2">Judul Agenda</label>
+          <input type="text" id="input-judul" class="w-full bg-espresso border border-mocha/30 rounded-xl px-4 py-3 text-latte focus:outline-none focus:border-mocha" placeholder="Contoh: Shift Pagi">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-bold text-latte/70 mb-2">Jam</label>
+            <input type="time" id="input-jam" class="w-full bg-espresso border border-mocha/30 rounded-xl px-4 py-3 text-latte focus:outline-none focus:border-mocha">
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-latte/70 mb-2">Tipe</label>
+            <select id="input-tipe" class="w-full bg-espresso border border-mocha/30 rounded-xl px-4 py-3 text-latte focus:outline-none focus:border-mocha appearance-none">
+              <option value="shift">Shift Barista</option>
+              <option value="restock">Restock Barang</option>
+              <option value="booking">Booking Meja</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-4 mt-8">
+        <button onclick="tutupModalJadwal()" class="flex-1 py-3 px-4 bg-transparent border border-mocha/30 text-latte hover:bg-white/5 font-bold rounded-xl transition-colors">Batal</button>
+        <button onclick="simpanAgenda()" class="flex-1 py-3 px-4 bg-mocha hover:bg-[#7a5032] text-espresso font-black rounded-xl transition-colors shadow-lg shadow-mocha/20">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed top-5 right-5 z-[9999] flex flex-col gap-3"></div>
+  <script src="./js/jadwal.js"></script>
+</body>
+</html>

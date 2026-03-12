@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stok Gudang | Kopi Bosku</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            espresso: '#120E0B',
+            macchiato: '#1C1612',
+            mocha: '#8C5E3C',
+            latte: '#F3E5D8',
+            matcha: '#4A5D23',
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #8C5E3C; border-radius: 10px; }
+  </style>
+</head>
+<body class="bg-espresso text-latte h-screen flex overflow-hidden relative">
+
+  <aside class="w-20 bg-macchiato border-r border-mocha/20 flex flex-col items-center py-6 hidden md:flex z-10">
+    <div class="w-12 h-12 bg-mocha rounded-xl flex items-center justify-center font-black text-espresso mb-8 shadow-lg shadow-mocha/20">BM</div>
+    
+    <nav class="flex-1 space-y-6 w-full flex flex-col items-center">
+      <a href="dashboard.html" class="p-3 text-latte/50 hover:text-mocha hover:bg-white/5 rounded-xl transition-all" title="Dashboard">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+      </a>
+      <a href="kasir.html" class="p-3 text-latte/50 hover:text-mocha hover:bg-white/5 rounded-xl transition-all" title="Kasir">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+      </a>
+      <a href="stok.html" class="p-3 bg-mocha text-espresso rounded-xl shadow-lg shadow-mocha/20 scale-110" title="Stok Gudang">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+      </a>
+      <a href="jadwal.html" class="p-3 text-latte/50 hover:text-mocha hover:bg-white/5 rounded-xl transition-all" title="Jadwal & Agenda">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+      </a>
+    </nav>
+  </aside>
+
+  <main class="flex-1 flex flex-col h-full overflow-hidden bg-espresso">
+    
+    <header class="p-6 border-b border-mocha/10 flex justify-between items-center bg-macchiato/50 backdrop-blur-md">
+      <div>
+        <h2 class="text-2xl font-bold text-latte">Manajemen Stok</h2>
+        <p class="text-sm text-latte/50 mt-1">Atur menu, harga, dan ketersediaan barang.</p>
+      </div>
+      <button onclick="bukaModal()" class="px-5 py-2.5 bg-mocha hover:bg-[#7a5032] text-espresso font-black rounded-xl text-sm transition-all flex items-center gap-2 shadow-lg shadow-mocha/20 active:scale-95">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path></svg>
+        Tambah Menu
+      </button>
+    </header>
+
+    <div class="flex-1 overflow-y-auto p-6">
+      <div class="bg-macchiato border border-mocha/20 rounded-3xl shadow-2xl overflow-hidden">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-white/5 text-latte/70 text-sm uppercase tracking-wider border-b border-mocha/20">
+              <th class="p-5 font-semibold">Foto</th>
+              <th class="p-5 font-semibold">Nama Menu</th>
+              <th class="p-5 font-semibold">Kategori</th>
+              <th class="p-5 font-semibold">Harga</th>
+              <th class="p-5 font-semibold text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tabel-stok" class="divide-y divide-mocha/10 text-sm">
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <div id="modal-form" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[99] hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
+    <div class="bg-macchiato border border-mocha/30 rounded-3xl p-8 w-full max-w-md shadow-2xl transform scale-95 transition-transform duration-300" id="modal-content">
+      <h3 class="text-2xl font-black text-mocha mb-6">Tambah Menu Baru</h3>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-bold text-latte/70 mb-2">Nama Menu</label>
+          <input type="text" id="input-nama" class="w-full bg-espresso border border-mocha/30 rounded-xl px-4 py-3 text-latte focus:outline-none focus:border-mocha focus:ring-1 focus:ring-mocha" placeholder="Contoh: Kopi Pandan">
+        </div>
+        <div>
+          <label class="block text-sm font-bold text-latte/70 mb-2">Harga (Rp)</label>
+          <input type="number" id="input-harga" class="w-full bg-espresso border border-mocha/30 rounded-xl px-4 py-3 text-latte focus:outline-none focus:border-mocha focus:ring-1 focus:ring-mocha" placeholder="Contoh: 25000">
+        </div>
+        <div>
+          <label class="block text-sm font-bold text-latte/70 mb-2">Kategori</label>
+          <select id="input-kategori" class="w-full bg-espresso border border-mocha/30 rounded-xl px-4 py-3 text-latte focus:outline-none focus:border-mocha focus:ring-1 focus:ring-mocha appearance-none">
+            <option value="1">Coffee</option>
+            <option value="2">Non-Coffee</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex gap-4 mt-8">
+        <button onclick="tutupModal()" class="flex-1 py-3 px-4 bg-transparent border border-mocha/30 text-latte hover:bg-white/5 font-bold rounded-xl transition-colors">Batal</button>
+        <button onclick="simpanMenu()" class="flex-1 py-3 px-4 bg-mocha hover:bg-[#7a5032] text-espresso font-black rounded-xl transition-colors shadow-lg shadow-mocha/20">Simpan Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed top-5 right-5 z-[9999] flex flex-col gap-3"></div>
+  <script src="./js/stok.js"></script>
+</body>
+</html>

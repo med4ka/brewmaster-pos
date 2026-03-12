@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS Dashboard | Kopi Bosku</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            espresso: '#120E0B',  
+            macchiato: '#1C1612', 
+            mocha: '#8C5E3C',     
+            latte: '#F3E5D8',     
+            matcha: '#4A5D23',    
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #8C5E3C; border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-espresso text-latte h-screen flex overflow-hidden">
+
+  <aside class="w-20 bg-macchiato border-r border-mocha/20 flex flex-col items-center py-6 hidden md:flex z-10 shrink-0">
+    <div class="w-12 h-12 bg-mocha rounded-xl flex items-center justify-center font-black text-espresso mb-8 shadow-lg shadow-mocha/20">BM</div>
+    
+    <nav class="flex-1 space-y-6 w-full flex flex-col items-center">
+      <a href="dashboard.html" class="p-3 bg-mocha text-espresso rounded-xl shadow-lg shadow-mocha/20 scale-110" title="Dashboard">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+      </a>
+      <a href="kasir.html" class="p-3 text-latte/50 hover:text-mocha hover:bg-white/5 rounded-xl transition-all" title="Kasir">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+      </a>
+      <a href="stok.html" class="p-3 text-latte/50 hover:text-mocha hover:bg-white/5 rounded-xl transition-all" title="Stok Gudang">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+      </a>
+      <a href="jadwal.html" class="p-3 text-latte/50 hover:text-mocha hover:bg-white/5 rounded-xl transition-all" title="Jadwal & Agenda">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+      </a>
+    </nav>
+  </aside>
+
+  <main class="flex-1 flex flex-col h-full overflow-hidden bg-espresso">
+    
+    <header class="p-6 border-b border-mocha/10 flex justify-between items-center bg-macchiato/50">
+      <div class="flex items-center gap-4">
+        <div class="w-10 h-10 bg-mocha/10 rounded-xl border border-mocha/30 flex items-center justify-center">
+          <svg class="w-6 h-6 text-mocha" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4h12v8a4 4 0 01-4 4H8a4 4 0 01-4-4V4z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 8h2a2 2 0 012 2v2a2 2 0 01-2 2h-2"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 20h12"></path>
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold">Ringkasan Hari Ini</h2>
+          <p class="text-xs text-latte/50">BrewMaster POS & Analytics System</p>
+        </div>
+      </div>
+      
+      <div id="current-date" class="text-sm px-4 py-2 rounded-lg border border-mocha/30 bg-macchiato text-latte/80 font-bold shadow-inner">
+        Memuat tanggal...
+      </div>
+    </header>
+
+    <div class="flex-1 overflow-y-auto p-8 flex flex-col gap-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 shrink-0">
+        
+        <div class="bg-macchiato/80 backdrop-blur-md p-8 rounded-3xl border border-white/5 shadow-2xl hover:shadow-mocha/20 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div class="absolute -right-6 -top-6 w-32 h-32 bg-mocha/10 rounded-full blur-3xl group-hover:bg-mocha/20 transition-colors"></div>
+          <p class="text-latte/60 text-base font-bold mb-2 relative z-10 uppercase tracking-wider">Pendapatan Hari Ini</p>
+          <h3 id="dash-revenue" class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-mocha to-latte relative z-10">Rp 0</h3>
+          <p id="dash-rev-pct" class="text-sm font-bold mt-3 relative z-10 flex items-center gap-1 text-latte/50">Kalkulasi...</p>
+        </div>
+
+        <div class="bg-macchiato/80 backdrop-blur-md p-8 rounded-3xl border border-white/5 shadow-2xl hover:shadow-mocha/20 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div class="absolute -right-6 -top-6 w-32 h-32 bg-latte/5 rounded-full blur-3xl group-hover:bg-latte/10 transition-colors"></div>
+          <p class="text-latte/60 text-base font-bold mb-2 relative z-10 uppercase tracking-wider">Pesanan Selesai</p>
+          <h3 id="dash-orders" class="text-4xl font-black text-white relative z-10">0 <span class="text-xl text-latte/40 font-medium">Transaksi</span></h3>
+          <p id="dash-ord-pct" class="text-sm font-bold mt-3 relative z-10 flex items-center gap-1 text-latte/50">Kalkulasi...</p>
+        </div>
+
+        <div class="bg-macchiato/80 backdrop-blur-md p-8 rounded-3xl border border-white/5 shadow-2xl hover:shadow-mocha/20 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div class="absolute -right-6 -top-6 w-32 h-32 bg-mocha/10 rounded-full blur-3xl group-hover:bg-mocha/20 transition-colors"></div>
+          <p class="text-latte/60 text-base font-bold mb-2 relative z-10 uppercase tracking-wider">Menu Terlaris</p>
+          <h3 id="dash-best-name" class="text-3xl font-black text-latte relative z-10 truncate">Memuat...</h3>
+          <p id="dash-best-qty" class="text-mocha text-sm font-bold mt-3 relative z-10">0 Terjual</p>
+        </div>
+
+      </div>
+
+      <div class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-8 min-h-[450px]">
+        
+        <div class="lg:col-span-2 bg-macchiato p-8 rounded-3xl border border-mocha/20 shadow-2xl flex flex-col">
+          <h3 class="font-bold text-lg mb-4 text-latte/80">Grafik Penjualan Mingguan</h3>
+          <div class="flex-1 w-full h-full relative mt-2">
+            <canvas id="revenueChart"></canvas>
+          </div>
+        </div>
+
+        <div class="bg-macchiato p-8 rounded-3xl border border-mocha/20 shadow-2xl flex flex-col">
+          <h3 class="font-bold text-lg mb-6 text-latte/80">Transaksi Terakhir</h3>
+          <div id="dash-recent" class="flex-1 space-y-5 overflow-y-auto pr-2">
+            </div>
+          <button onclick="bukaModalRiwayat()" class="w-full mt-6 py-3 text-sm font-bold text-mocha border border-mocha/30 rounded-xl hover:bg-mocha hover:text-espresso transition-all shrink-0 active:scale-95">
+            Lihat Semua Riwayat
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div id="modal-riwayat" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[99] hidden flex items-center justify-center opacity-0 transition-opacity duration-300 p-4">
+      <div class="bg-macchiato border border-mocha/30 rounded-3xl p-6 md:p-8 w-full max-w-3xl h-[85vh] flex flex-col shadow-2xl transform scale-95 transition-transform duration-300" id="modal-content-riwayat">
+        <div class="flex justify-between items-center mb-6 border-b border-mocha/10 pb-4">
+          <div>
+            <h3 class="text-2xl font-black text-mocha">Riwayat Transaksi</h3>
+            <p class="text-sm text-latte/50 mt-1">Daftar lengkap pesanan dan item yang laku.</p>
+          </div>
+          <button onclick="tutupModalRiwayat()" class="p-2 bg-espresso border border-mocha/30 text-latte hover:text-red-500 rounded-xl transition-colors active:scale-95">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+        <div class="flex-1 overflow-y-auto pr-2 space-y-4" id="list-semua-riwayat"></div>
+      </div>
+    </div>
+
+    <script src="./js/dashboard.js"></script>
+  </main>
+</body>
+</html>

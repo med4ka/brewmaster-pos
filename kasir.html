@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kasir POS | Kopi Bosku</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            espresso: '#120E0B',
+            macchiato: '#1C1612',
+            mocha: '#8C5E3C',
+            latte: '#F3E5D8',
+            matcha: '#4A5D23',
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #8C5E3C; border-radius: 10px; }
+  </style>
+</head>
+<body class="bg-espresso text-latte h-screen flex overflow-hidden">
+
+ <aside class="w-20 bg-macchiato border-r border-mocha/20 flex flex-col items-center py-6 hidden md:flex">
+    <div class="w-12 h-12 bg-mocha rounded-xl flex items-center justify-center font-black text-espresso mb-8 shadow-lg shadow-mocha/20">BM</div>
+    
+    <nav class="flex-1 space-y-6 w-full flex flex-col items-center">
+      <a href="dashboard.html" class="p-3 text-latte/50 hover:text-mocha hover:bg-white/5 rounded-xl transition-all" title="Dashboard">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+      </a>
+      <a href="kasir.html" class="p-3 bg-mocha text-espresso rounded-xl shadow-lg shadow-mocha/20 scale-110" title="Kasir">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+      </a>
+      <a href="stok.html" class="p-3 text-latte/50 hover:text-mocha hover:bg-white/5 rounded-xl transition-all" title="Stok Gudang">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+      </a>
+      <a href="jadwal.html" class="p-3 text-latte/50 hover:text-mocha hover:bg-white/5 rounded-xl transition-all" title="Jadwal & Agenda">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+      </a>
+    </nav>
+  </aside>
+
+  <main class="flex-1 flex flex-col lg:flex-row h-full overflow-hidden">
+    
+    <div class="w-full lg:w-[70%] flex flex-col h-full bg-espresso">
+      
+      <header class="p-6 border-b border-mocha/10 flex justify-between items-center bg-macchiato/50">
+        <h2 class="text-2xl font-bold">Pilih Menu</h2>
+        <div class="flex gap-2">
+          <button onclick="filterMenu('Semua')" class="px-4 py-2 bg-mocha text-espresso font-bold rounded-lg text-sm focus:ring-2 focus:ring-latte">Semua</button>
+          <button onclick="filterMenu('Coffee')" class="px-4 py-2 bg-macchiato border border-mocha/30 text-latte hover:bg-mocha/20 rounded-lg text-sm transition-colors focus:ring-2 focus:ring-mocha">Coffee</button>
+          <button onclick="filterMenu('Non-Coffee')" class="px-4 py-2 bg-macchiato border border-mocha/30 text-latte hover:bg-mocha/20 rounded-lg text-sm transition-colors focus:ring-2 focus:ring-mocha">Non-Coffee</button>
+        </div>
+      </header>
+
+      <div class="flex-1 overflow-y-auto p-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4" id="menu-grid">
+          </div>
+      </div>
+
+    </div>
+        </div>
+      </div>  
+    </div>
+
+    <div class="w-full lg:w-[30%] bg-macchiato border-l border-mocha/20 flex flex-col h-full shadow-2xl">
+      <header class="p-6 border-b border-mocha/10">
+        <h2 class="text-xl font-bold mb-1">Struk Pesanan</h2>
+        <p class="text-xs text-latte/50">Order #ORD-090</p>
+      </header>
+
+      <div class="flex-1 overflow-y-auto p-6 space-y-4" id="cart-items">
+        <div class="flex justify-between items-center pb-4 border-b border-mocha/10">
+          <div class="text-right">
+          </div>
+        </div>
+      </div>
+
+      <div class="p-6 bg-espresso/50 border-t border-mocha/20">
+        <div class="flex justify-between text-sm mb-2 text-latte/70">
+          <span>Subtotal</span>
+          <span id="subtotal-text">Rp 0</span>
+        </div>
+        <div class="flex justify-between text-sm mb-4 text-latte/70">
+          <span>Pajak (10%)</span>
+          <span id="tax-text">Rp 0</span>
+        </div>
+        <div class="flex justify-between text-xl font-black mb-6 text-latte">
+          <span>Total</span>
+          <span id="total-text" class="text-mocha">Rp 0</span>
+        </div>
+        
+        <button onclick="alert('Fitur Pembayaran Menyusul Bos!')" class="w-full py-4 bg-matcha hover:bg-green-700 text-white font-black rounded-xl text-lg transition-transform active:scale-95 shadow-lg shadow-matcha/20">
+          Bayar Sekarang
+        </button>
+      </div>
+    </div>
+
+  </main>
+  <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-TUKAR_DENGAN_KEY_ASLI_LU"></script>
+  <script src="./js/kasir.js"></script>
+  <div id="toast-container" class="fixed top-5 right-5 z-[9999] flex flex-col gap-3"></div>
+</body>
+</html>
