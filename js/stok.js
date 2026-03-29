@@ -1,6 +1,3 @@
-// ==========================================
-// 1. ALAT BANTU (FORMAT & TOAST)
-// ==========================================
 const formatRupiah = (angka) => {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
 };
@@ -26,7 +23,7 @@ const showToast = (message, type = 'success') => {
   }, 3000);
 };
 
-// Database Foto Local (Sama kayak di kasir)
+
 const getFotoMenu = (name) => {
   const fotos = {
     'Iced Americano': './img/icedamericano.jpg',
@@ -40,11 +37,9 @@ const getFotoMenu = (name) => {
   return fotos[name] || './img/icedamericano.jpg'; 
 };
 
-// ==========================================
-// 2. AMBIL DATA DARI GOLANG & RENDER TABEL
-// ==========================================
-let globalStok = []; // Buat nyimpen data sementara
-let idYangLagiDiedit = null; // Penanda rahasia buat mode edit
+
+let globalStok = []; 
+let idYangLagiDiedit = null; 
 
 const fetchStok = async () => {
   try {
@@ -94,15 +89,13 @@ const renderTabel = (data) => {
   });
 };
 
-// ==========================================
-// 3. LOGIKA MODAL (TAMBAH & EDIT)
-// ==========================================
+
 const modal = document.getElementById('modal-form');
 const modalContent = document.getElementById('modal-content');
 
-// Fungsi khusus buat buka Modal versi Tambah Baru
+
 const bukaModal = () => {
-  idYangLagiDiedit = null; // Reset penanda edit
+  idYangLagiDiedit = null; 
   document.querySelector('#modal-content h3').innerText = 'Tambah Menu Baru';
   document.getElementById('input-nama').value = '';
   document.getElementById('input-harga').value = '';
@@ -111,10 +104,10 @@ const bukaModal = () => {
   tampilkanModalAja();
 };
 
-// Fungsi khusus buat buka Modal versi Edit
+
 const bukaModalEdit = (id) => {
-  idYangLagiDiedit = id; // Setel penanda edit
-  const item = globalStok.find(p => p.id === id); // Cari data lama
+  idYangLagiDiedit = id; 
+  const item = globalStok.find(p => p.id === id); 
   if(!item) return;
 
   document.querySelector('#modal-content h3').innerText = 'Edit Menu';
@@ -139,9 +132,7 @@ const tutupModal = () => {
   setTimeout(() => modal.classList.add('hidden'), 300); 
 };
 
-// ==========================================
-// 4. LOGIKA CRUD KAWIN SAMA GOLANG
-// ==========================================
+
 const simpanMenu = async () => {
   const nama = document.getElementById('input-nama').value;
   const harga = document.getElementById('input-harga').value;
@@ -153,7 +144,6 @@ const simpanMenu = async () => {
   }
   
   try {
-    // Jalur bercabang: Kalau ada ID berarti PUT (Edit), kalau gak ada berarti POST (Tambah)
     const url = idYangLagiDiedit ? `http://localhost:8080/api/products/${idYangLagiDiedit}` : 'http://localhost:8080/api/products';
     const method = idYangLagiDiedit ? 'PUT' : 'POST';
 
@@ -192,5 +182,4 @@ const hapusMenu = async (id) => {
   }
 };
 
-// Starter Engine
 document.addEventListener('DOMContentLoaded', fetchStok);
