@@ -1,9 +1,6 @@
 let menus = [];
 let cart = [];
 
-// ==========================================
-// 1. ALAT BANTU (FORMAT UANG & NOTIFIKASI)
-// ==========================================
 const formatRupiah = (angka) => {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
 };
@@ -36,9 +33,8 @@ const showToast = (message, type = 'success') => {
   }, 3000);
 };
 
-// ==========================================
-// 2. AMBIL DATA DARI BACKEND & GAMBAR UI
-// ==========================================
+
+
 const fetchMenus = async () => {
   try {
     const response = await fetch('http://localhost:8080/api/products');
@@ -46,13 +42,13 @@ const fetchMenus = async () => {
     
     const data = await response.json();
     
-    // Konversi category_id dari Golang ke teks biar tombol filter lu jalan
+    
     menus = data.map(item => ({
       ...item,
       category: item.category_id === 1 ? 'Coffee' : 'Non-Coffee'
     }));
 
-    // BUKAN renderMenus(), tapi filterMenu('Semua')!
+    
     filterMenu('Semua'); 
   } catch (error) {
     console.error("Error:", error);
@@ -99,9 +95,7 @@ const filterMenu = (kategori) => {
   });
 };
 
-// ==========================================
-// 3. LOGIKA KERANJANG & STRUK
-// ==========================================
+
 const addToCart = (menu) => {
   const existingItem = cart.find(item => item.id === menu.id);
   if (existingItem) {
@@ -153,9 +147,7 @@ const renderCart = () => {
   document.getElementById('total-text').innerText = formatRupiah(total);
 };
 
-// ==========================================
-// 4. OVERRIDE TOMBOL BAYAR (NYAMBUNG KE GOLANG)
-// ==========================================
+
 const tesBayar = async () => {
   if (cart.length === 0) {
     showToast("Keranjang masih kosong Bos!", "warning");
@@ -184,9 +176,7 @@ const tesBayar = async () => {
   }
 };
 
-// ==========================================
-// 5. STARTER ENGINE
-// ==========================================
+
 document.addEventListener('DOMContentLoaded', () => {
   fetchMenus();
   
