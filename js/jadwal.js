@@ -1,19 +1,14 @@
-// ==========================================
-// 1. SIHIR JAM REAL-TIME 
-// ==========================================
+
 const updateJam = () => {
   const sekarang = new Date();
   const jam = sekarang.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  // Kita ganti titik jadi titik dua biar estetik (standar digital clock)
+ 
   document.getElementById('realtime-clock').innerText = jam.replace(/\./g, ':');
 };
 setInterval(updateJam, 1000);
 updateJam();
 
-// ==========================================
-// 2. DATABASE AGENDA LOKAL (Sistem Sementara)
-// ==========================================
-// Karena belum ada backend Golang buat jadwal, kita simpan di RAM browser dulu
+
 let databaseAgenda = {
   '2026-03-11': [
     { id: 1, jam: '08:00', judul: 'Shift Pagi Bos Ghifari', tipe: 'shift' },
@@ -21,42 +16,40 @@ let databaseAgenda = {
   ]
 };
 
-let tanggalLagiDibuka = new Date(); // Bulan/Tahun yang lagi ditampilin
-let tanggalYangDipilih = new Date(); // Tanggal yang diklik user
+let tanggalLagiDibuka = new Date(); 
+let tanggalYangDipilih = new Date(); 
 
 const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
-// ==========================================
-// 3. LOGIKA RENDER KALENDER (OTAKNYA)
-// ==========================================
+
 const renderKalender = () => {
   const tahun = tanggalLagiDibuka.getFullYear();
   const bulan = tanggalLagiDibuka.getMonth();
   
-  // Ubah judul kalender
+
   document.getElementById('bulan-tahun').innerText = `${namaBulan[bulan]} ${tahun}`;
   
-  const tanggalPertama = new Date(tahun, bulan, 1).getDay(); // Hari apa tgl 1?
-  const jumlahHari = new Date(tahun, bulan + 1, 0).getDate(); // Berapa hari bulan ini?
+  const tanggalPertama = new Date(tahun, bulan, 1).getDay(); 
+  const jumlahHari = new Date(tahun, bulan + 1, 0).getDate(); 
   
   const grid = document.getElementById('grid-kalender');
   grid.innerHTML = '';
 
-  // Bikin kotak kosong sebelum tanggal 1
+  
   for (let i = 0; i < tanggalPertama; i++) {
     grid.innerHTML += `<div class="rounded-xl border border-transparent p-2"></div>`;
   }
 
-  // Bikin kotak tanggal 1 sampai akhir
+  
   const hariIniBeneran = new Date();
   
   for (let i = 1; i <= jumlahHari; i++) {
     const stringTanggal = `${tahun}-${String(bulan + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
     const adaAgenda = databaseAgenda[stringTanggal] ? true : false;
     
-    // Cek apakah ini hari ini secara real time
+    
     const isHariIni = i === hariIniBeneran.getDate() && bulan === hariIniBeneran.getMonth() && tahun === hariIniBeneran.getFullYear();
-    // Cek apakah tanggal ini lagi diklik user
+  
     const isDipilih = i === tanggalYangDipilih.getDate() && bulan === tanggalYangDipilih.getMonth() && tahun === tanggalYangDipilih.getFullYear();
 
     let classKotak = 'rounded-xl p-2 border transition-all cursor-pointer flex flex-col justify-between hover:border-mocha hover:bg-mocha/5 relative ';
@@ -87,13 +80,11 @@ const ubahBulan = (angka) => {
 
 const pilihTanggal = (tahun, bulan, tanggal) => {
   tanggalYangDipilih = new Date(tahun, bulan, tanggal);
-  renderKalender(); // Refresh kotak yang nyala
-  renderAgenda(); // Nampilin list agenda di sebelah kanan
+  renderKalender(); 
+  renderAgenda(); 
 };
 
-// ==========================================
-// 4. LOGIKA AGENDA SEBELAH KANAN
-// ==========================================
+
 const renderAgenda = () => {
   const tglString = `${tanggalYangDipilih.getFullYear()}-${String(tanggalYangDipilih.getMonth() + 1).padStart(2, '0')}-${String(tanggalYangDipilih.getDate()).padStart(2, '0')}`;
   
@@ -111,7 +102,7 @@ const renderAgenda = () => {
         <p class="text-sm font-medium">Belum ada agenda</p>
       </div>`;
   } else {
-    // Urutin berdasarkan jam
+    
     jadwalHariIni.sort((a, b) => a.jam.localeCompare(b.jam)).forEach(item => {
       let icon, warnaBorder, warnaText;
       
@@ -147,9 +138,7 @@ const renderAgenda = () => {
   }
 };
 
-// ==========================================
-// 5. MODAL & TOAST NOTIF
-// ==========================================
+
 const modal = document.getElementById('modal-jadwal');
 const modalContent = document.getElementById('modal-content-jadwal');
 
@@ -193,7 +182,7 @@ const simpanAgenda = () => {
   showToast("Agenda berhasil disimpan!", "success");
   tutupModalJadwal();
   renderAgenda();
-  renderKalender(); // Refresh titik di kalender
+  renderKalender(); 
 };
 
 const hapusAgenda = (tglString, id) => {
