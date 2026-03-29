@@ -85,7 +85,7 @@ func main() {
 		c.JSON(200, gin.H{"message": "Sukses"})
 	})
 
-	// PENGAMAN CHECKOUT MIDTRANS
+	
 	midtrans.ServerKey = "SB-Mid-server-TUKAR_DENGAN_KEY_ASLI_LU"
 	midtrans.Environment = midtrans.Sandbox
 
@@ -117,16 +117,16 @@ func main() {
 		c.JSON(200, gin.H{"token": token, "order_id": orderID})
 	})
 
-	// 6. DASHBOARD ANALYTICS MAHAL (UTUH)
+	
 	r.GET("/api/dashboard", func(c *gin.Context) {
 		var todayRev, yesterdayRev float64
 		var todayOrd, yesterdayOrd int
 
-		// 1. Hitung Hari Ini vs Kemarin
+		
 		db.QueryRow("SELECT COALESCE(SUM(total), 0), COUNT(id) FROM orders WHERE date(created_at, 'localtime') = date('now', 'localtime')").Scan(&todayRev, &todayOrd)
 		db.QueryRow("SELECT COALESCE(SUM(total), 0), COUNT(id) FROM orders WHERE date(created_at, 'localtime') = date('now', '-1 day', 'localtime')").Scan(&yesterdayRev, &yesterdayOrd)
 
-		// 2. Hitung Persentase
+		
 		revPct, ordPct := 0.0, 0.0
 		if yesterdayRev > 0 {
 			revPct = ((todayRev - yesterdayRev) / yesterdayRev) * 100
@@ -139,7 +139,7 @@ func main() {
 			ordPct = 100.0
 		}
 
-		// 3. Menu Terlaris Hari Ini
+		
 		var bestItem string
 		var bestQty int
 		err := db.QueryRow(`SELECT oi.product_name, SUM(oi.quantity) as total_qty FROM order_items oi JOIN orders o ON oi.order_id = o.order_id WHERE date(o.created_at, 'localtime') = date('now', 'localtime') GROUP BY oi.product_name ORDER BY total_qty DESC LIMIT 1`).Scan(&bestItem, &bestQty)
@@ -148,7 +148,7 @@ func main() {
 			bestQty = 0
 		}
 
-		// 4. DATA GRAFIK MINGGUAN ASLI
+		
 		rowsChart, _ := db.Query(`
 			SELECT strftime('%w', created_at, 'localtime') as wday, SUM(total) 
 			FROM orders 
@@ -158,15 +158,15 @@ func main() {
 		`)
 		defer rowsChart.Close()
 
-		chartData := make([]float64, 7) // Array isi 7 (Minggu-Sabtu)
+		chartData := make([]float64, 7) 
 		for rowsChart.Next() {
 			var wday int
 			var tot float64
 			rowsChart.Scan(&wday, &tot)
-			chartData[wday] = tot // Masukin duit ke hari yang pas
+			chartData[wday] = tot 
 		}
 
-		// 5. Riwayat Terakhir
+		
 		rowsRec, _ := db.Query("SELECT order_id, total FROM orders ORDER BY id DESC LIMIT 3")
 		defer rowsRec.Close()
 		var recents []map[string]interface{}
@@ -187,12 +187,12 @@ func main() {
 			"orders_pct":          ordPct,
 			"best_item":           bestItem,
 			"best_qty":            bestQty,
-			"chart_data":          chartData, // Data asli seminggu!
+			"chart_data":          chartData, 
 			"recent_transactions": recents,
 		})
 	})
 
-	// RIWAYAT TRANSAKSI FULL (BUAT TOMBOL LIHAT SEMUA)
+	
 	r.GET("/api/orders", func(c *gin.Context) {
 		rows, err := db.Query("SELECT order_id, total, created_at FROM orders ORDER BY id DESC")
 		if err != nil {
