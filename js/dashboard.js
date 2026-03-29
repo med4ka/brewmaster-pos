@@ -1,6 +1,3 @@
-// ==========================================
-// 1. TARIK DATA ANALYTICS DARI GOLANG
-// ==========================================
 const formatRupiah = (angka) => {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
 };
@@ -22,7 +19,7 @@ const fetchDashboard = async () => {
     const response = await fetch('http://localhost:8080/api/dashboard');
     const data = await response.json();
     
-    // Update Angka
+  
     document.getElementById('dash-revenue').innerText = formatRupiah(data.today_revenue || 0);
     document.getElementById('dash-orders').innerHTML = `${data.today_orders || 0} <span class="text-lg text-latte/40 font-medium">Transaksi</span>`;
     
@@ -32,7 +29,7 @@ const fetchDashboard = async () => {
     document.getElementById('dash-best-name').innerText = data.best_item || "Belum Ada Data";
     document.getElementById('dash-best-qty').innerText = `${data.best_qty || 0} Terjual hari ini`;
     
-    // Update Transaksi Terakhir (Ini yang bikin error kemaren, sekarang udah bener!)
+  
     const listContainer = document.getElementById('dash-recent');
     if(listContainer) {
         listContainer.innerHTML = '';
@@ -53,7 +50,7 @@ const fetchDashboard = async () => {
         }
     }
 
-    // Render ulang Grafik pakai data asli
+  
     renderChartAsli(data.chart_data);
 
   } catch(e) {
@@ -63,16 +60,14 @@ const fetchDashboard = async () => {
 
 fetchDashboard();
 
-// ==========================================
-// 2. LOGIKA GRAFIK MINGGUAN (CHART.JS) ASLI
-// ==========================================
-let myChart = null; // Penampung chart biar gak kencet
+
+let myChart = null; 
 
 const renderChartAsli = (dataMingguan) => {
   const ctx = document.getElementById('revenueChart');
   if (!ctx) return;
 
-  // Kalo chart lama ada, ancurin dulu biar gak error kencet
+ 
   if (myChart) myChart.destroy();
 
   let gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 300);
@@ -82,11 +77,11 @@ const renderChartAsli = (dataMingguan) => {
   myChart = new Chart(ctx, {
     type: 'line',
     data: {
-      // Data backend SQLite kirim array 0-6 (Min-Sab). Kita ubah urutannya biar grafik mulai dari Senin.
+    
       labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
       datasets: [{
         label: 'Pendapatan Seminggu (Rp)',
-        // Kita urutin datanya: [Senin(1), Selasa(2), ... , Sabtu(6), Minggu(0)]
+       
         data: [
           dataMingguan[1], dataMingguan[2], dataMingguan[3], dataMingguan[4], dataMingguan[5], dataMingguan[6], dataMingguan[0]
         ], 
@@ -117,9 +112,7 @@ const renderChartAsli = (dataMingguan) => {
   });
 };
 
-// ==========================================
-// 3. TOGGLE SIDEBAR 
-// ==========================================
+
 const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('toggleSidebar');
 
@@ -137,31 +130,27 @@ if (sidebar && toggleBtn) {
   });
 }
 
-// ==========================================
-// 4. SIHIR TANGGAL REAL-TIME
-// ==========================================
+
 const updateTanggal = () => {
   const dateElement = document.getElementById('current-date');
   if (!dateElement) return;
 
   const sekarang = new Date();
-  // Setting format jadi bahasa Indonesia (Contoh: Rabu, 11 Maret 2026)
+  
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   
   dateElement.innerText = sekarang.toLocaleDateString('id-ID', options);
 };
 
-// Langsung panggil pas web dibuka
+
 updateTanggal();
 
-// ==========================================
-// 5. MODAL RIWAYAT TRANSAKSI FULL
-// ==========================================
+
 const modalRiwayat = document.getElementById('modal-riwayat');
 const modalContentRiwayat = document.getElementById('modal-content-riwayat');
 
 const bukaModalRiwayat = async () => {
-  // Munculin Modal
+
   modalRiwayat.classList.remove('hidden');
   setTimeout(() => {
     modalRiwayat.classList.remove('opacity-0');
@@ -183,12 +172,12 @@ const bukaModalRiwayat = async () => {
     }
 
     orders.forEach(order => {
-      // Bikin format tanggal cantik
+     
       const tgl = new Date(order.created_at).toLocaleString('id-ID', {
         dateStyle: 'medium', timeStyle: 'short'
       });
       
-      // Susun list barang yang dibeli (Contoh: 2x Kopi, 1x Roti)
+     
       const itemsText = order.items && order.items.length > 0
         ? order.items.map(i => `<span class="text-mocha font-black">${i.qty}x</span> ${i.name}`).join(' • ') 
         : '<span class="italic opacity-50">Tidak ada detail item</span>';
