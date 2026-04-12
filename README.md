@@ -7,7 +7,7 @@ Brewmaster POS is designed to handle daily coffee shop operations without the ov
 
 ## 📸 Sneak Peek
 
-![Cashier Interface](./kasir.jpg)
+![Cashier Interface](./kasir.png)
 *Intuitive Point of Sale interface for quick order processing and cart management.*
 
 ![Analytics Dashboard](./dashboard.png)
