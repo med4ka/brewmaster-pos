@@ -35,13 +35,13 @@ Featuring a low-latency concurrent REST API backend paired with a minimalist UI,
 ### 1. The Cashier & Transaction Terminal
 *Intuitive layout built for seamless, low-latency entry processing and active product mapping parameters.*
 <p align="center">
-  ![Cashier Interface](./kasir.png)
+  <img src="./kasir.png" width="90%" alt="Brewmaster Cashier System"/>
 </p>
 
 ### 2. Analytical Control Dashboard
 *Aggregated analytics visualization stack displaying revenue, product velocity metric margins, and automated chart triggers.*
 <p align="center">
- ![Analytics Dashboard](./dashboard.png)
+  <img src="./dashboard.png" width="90%" alt="Brewmaster Analytics Dashboard"/>
 </p>
 
 ---
